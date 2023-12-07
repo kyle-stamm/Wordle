@@ -1,5 +1,6 @@
 from squares import *
 
+
 class Grid:
 
     def __init__(self, rows, cols, word):

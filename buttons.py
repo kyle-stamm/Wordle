@@ -1,6 +1,7 @@
 import pygame
 pygame.init()
 
+
 class Button:
 
     TEXT_COLOR = (0, 0, 0)
