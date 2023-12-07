@@ -72,12 +72,37 @@ class LetterButton(Button):
 
     LETTER_BOX_WIDTH = 50
     LETTER_BOX_HEIGHT = 50
-    LETTER_BOX_COLOR = (215, 215, 215)
+    LETTER_BOX_COLOR_INITIAL = (215, 215, 215)
+    LETTER_BOX_COLOR_NOT_IN_WORD = (130, 130, 130)
+    LETTER_BOX_COLOR_WRONG_POS = (195, 217, 26)
+    LETTER_BOX_COLOR_RIGHT_POS = (22, 107, 22)
+
 
     def __init__(self, letter, x_pos, y_pos):
 
         super().__init__(letter, self.LETTER_BOX_HEIGHT, self.LETTER_BOX_WIDTH,
-                         self.LETTER_BOX_COLOR, 2, x_pos=x_pos, y_pos=y_pos)
+                         self.LETTER_BOX_COLOR_INITIAL, 2, x_pos=x_pos, y_pos=y_pos)
+        self.status = -1
+
+    def render(self, screen):
+
+        if self.status == -1:
+            pygame.draw.rect(screen, self.LETTER_BOX_COLOR_INITIAL, self.hitbox)
+        elif self.status == 1:
+            pygame.draw.rect(screen, self.LETTER_BOX_COLOR_NOT_IN_WORD, self.hitbox)
+        elif self.status == 2:
+            pygame.draw.rect(screen, self.LETTER_BOX_COLOR_WRONG_POS, self.hitbox)
+        elif self.status == 3:
+            pygame.draw.rect(screen, self.LETTER_BOX_COLOR_RIGHT_POS, self.hitbox)
+
+        pygame.draw.rect(screen, self.edge_color, self.hitbox, 5)
+        screen.blit(self.text, self.text_position)
 
     def get_letter(self):
         return self.string
+
+    def get_status(self):
+        return self.status
+
+    def set_status(self, status):
+        self.status = status

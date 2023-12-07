@@ -1,4 +1,3 @@
-import pygame
 import random
 from text import *
 from buttons import *
@@ -16,15 +15,13 @@ end = [False, None]
 
 text_list = [Text('Welcome to Wordle!', 48, (0, 0, 0), 1, y_pos=200),
              Text('WORDLE', 36, (240, 240, 240), 2, y_pos=20),
-             Text('You Won!', 60, (0, 0, 0), 3),
-             Text('You Lost!', 60, (0, 0, 0), 4)]
+             Text('You Won!', 60, (0, 0, 0), 3, y_pos=300),
+             Text('You Lost!', 60, (0, 0, 0), 4, y_pos=300)]
 
 button_list = [Button('Start', 100, 200, (150, 50, 0), 1, y_pos=400),
                Button('Exit', 50, 50, (150, 50, 0), 2, x_pos=690, y_pos=10),
-               Button('Exit', 100, 150, (12, 176, 194), 3, y_pos=550),
-               Button('Exit', 100, 150, (12, 176, 194), 4, y_pos=550)]
-
-word_bank = ['chalk', 'young', 'woman', 'binge', 'large', 'small']
+               Button('Exit', 100, 150, (12, 176, 194), 3, y_pos=475),
+               Button('Exit', 100, 150, (12, 176, 194), 4, y_pos=475)]
 
 alphabet = []
 for x in range(10):
@@ -33,6 +30,12 @@ for y in range(10, 19):
     alphabet.append(LetterButton(chr(y + 65), 150 + ((y - 10) * 50), 600))
 for z in range(19, 26):
     alphabet.append(LetterButton(chr(z + 65), 200 + ((z - 19) * 50), 650))
+
+word_bank = []
+file = open('5 letter words.txt')
+for line in file:
+    word_bank.append(line.strip())
+file.close()
 
 
 def update(x_pos, y_pos):
@@ -48,7 +51,7 @@ def update(x_pos, y_pos):
                 if button.get_hitbox().collidepoint(x_pos, y_pos) and button.get_scene() == scene:
                     scene = button.set_clicked_true()
                     start = True
-                    grid = Grid(6, 5, word_bank[random.randint(0, len(word_bank) - 1)])
+                    grid = Grid(6, 5, word_bank[random.randint(0, len(word_bank) - 1)], word_bank)
                     # grid = Grid(6, 5, word_bank[-1])
 
         elif scene == 2:
@@ -72,7 +75,13 @@ def update(x_pos, y_pos):
                     elif event.type == pygame.KEYDOWN:
 
                         if event.key == pygame.K_RETURN and user_input[4] != '':
-                            user_types = False
+                            word_str = ''
+                            for letter in user_input:
+                                word_str += letter
+
+                            if word_str.lower() in word_bank:
+                                user_types = False
+
                         elif event.key == pygame.K_BACKSPACE:
                             if not flag:
                                 user_input[index_last_blank - 1] = ''
@@ -87,8 +96,10 @@ def update(x_pos, y_pos):
                     square.insert_letter(user_input[square.get_col()])
 
                 if not user_types:
+
                     user_input = ['', '', '', '', '']
-                    if grid.check_row():
+
+                    if grid.check_row(alphabet):
                         end[0] = True
                         end[1] = 'win'
 

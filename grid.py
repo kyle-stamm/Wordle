@@ -3,7 +3,7 @@ from squares import *
 
 class Grid:
 
-    def __init__(self, rows, cols, word):
+    def __init__(self, rows, cols, word, word_bank):
 
         self.rows = rows
         self.cols = cols
@@ -11,6 +11,7 @@ class Grid:
         self.word_list = []
         for letter in self.word:
             self.word_list.append(letter)
+        self.word_bank = word_bank
 
         self.squares = []
         for row in range(rows):
@@ -23,7 +24,7 @@ class Grid:
 
         self.word_square_render = []
         for x in range(cols):
-            self.word_square_render.append(Square(5, x, 3))
+            self.word_square_render.append(Square(4, x, 3))
             self.word_square_render[x].insert_letter(self.word[x])
 
     def render(self, screen):
@@ -38,6 +39,9 @@ class Grid:
     def get_current_row(self):
         return self.current_row
 
+    def get_word_bank(self):
+        return self.word_bank
+
     def check_win(self):
 
         for square in self.current_row:
@@ -46,17 +50,29 @@ class Grid:
         else:
             return True
 
-    def check_row(self):
+    def check_row(self, alphabet):
 
         for x in range(len(self.current_row)):
             if self.current_row[x].get_letter() not in self.word_list:
                 self.current_row[x].set_status(1)
 
+                for letter in alphabet:
+                    if letter.get_letter() == self.current_row[x].get_letter() and (letter.get_status() != 3 or letter.get_status() != 2):
+                        letter.set_status(1)
+
             elif self.current_row[x].get_letter() == self.word_list[x]:
                 self.current_row[x].set_status(3)
 
+                for letter in alphabet:
+                    if letter.get_letter() == self.current_row[x].get_letter():
+                        letter.set_status(3)
+
             elif self.current_row[x].get_letter() in self.word_list and not (self.word_list.index(self.current_row[x].get_letter()) == self.current_row[x].get_col()):
                 self.current_row[x].set_status(2)
+
+                for letter in alphabet:
+                    if letter.get_letter() == self.current_row[x].get_letter() and letter.get_status() != 3:
+                        letter.set_status(2)
 
         if self.check_win():
             return True
