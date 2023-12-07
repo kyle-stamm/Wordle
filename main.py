@@ -20,8 +20,10 @@ text_list = [Text('Welcome to Wordle!', 48, (0, 0, 0), 1, y_pos=200),
 
 button_list = [Button('Start', 100, 200, (150, 50, 0), 1, y_pos=400),
                Button('Exit', 50, 50, (150, 50, 0), 2, x_pos=690, y_pos=10),
-               Button('Exit', 100, 150, (12, 176, 194), 3, y_pos=475),
-               Button('Exit', 100, 150, (12, 176, 194), 4, y_pos=475)]
+               Button('Exit', 100, 150, (12, 176, 194), 3, x_pos=400, y_pos=475),
+               Button('Play Again', 100, 150, (12, 176, 194), 3, x_pos=200, y_pos=475),
+               Button('Exit', 100, 150, (12, 176, 194), 4, x_pos=400, y_pos=475),
+               Button('Play Again', 100, 150, (12, 176, 194), 4, x_pos=200, y_pos=475)]
 
 alphabet = []
 for x in range(10):
@@ -37,6 +39,11 @@ for line in file:
     word_bank.append(line.strip())
 file.close()
 
+wordle_bank = []
+file = open('wordle bank.txt')
+for line in file:
+    wordle_bank.append(line.strip())
+file.close()
 
 def update(x_pos, y_pos):
 
@@ -51,8 +58,8 @@ def update(x_pos, y_pos):
                 if button.get_hitbox().collidepoint(x_pos, y_pos) and button.get_scene() == scene:
                     scene = button.set_clicked_true()
                     start = True
-                    grid = Grid(6, 5, word_bank[random.randint(0, len(word_bank) - 1)], word_bank)
-                    # grid = Grid(6, 5, word_bank[-1])
+                    grid = Grid(6, 5, wordle_bank[random.randint(0, len(wordle_bank) - 1)], word_bank)
+                    # grid = Grid(6, 5, word_bank[0], word_bank)
 
         elif scene == 2:
 
@@ -141,6 +148,15 @@ def update(x_pos, y_pos):
                 for button in button_list:
                     if button.get_hitbox().collidepoint(x_pos, y_pos) and button.get_scene() == scene:
                         scene = button.set_clicked_true()
+                        start = False
+                        end[0] = False
+                        end[1] = None
+
+                        for letter in alphabet:
+                            letter.set_status(-1)
+
+                        for button in button_list:
+                            button.set_clicked_false()
 
         elif scene == 4:
 
@@ -148,6 +164,15 @@ def update(x_pos, y_pos):
                 for button in button_list:
                     if button.get_hitbox().collidepoint(x_pos, y_pos) and button.get_scene() == scene:
                         scene = button.set_clicked_true()
+                        start = False
+                        end[0] = False
+                        end[1] = None
+
+                        for letter in alphabet:
+                            letter.set_status(-1)
+
+                        for button in button_list:
+                            button.set_clicked_false()
 
 
 def render():
