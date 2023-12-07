@@ -48,12 +48,6 @@ class Square:
 
         pygame.draw.rect(screen, self.EDGE_COLOR, self.hitbox, 5)
 
-    def insert_letter(self, letter):
-        self.letter = letter
-
-    def set_status(self, status):
-        self.status = status
-
     def get_col(self):
         return self.col
 
@@ -62,3 +56,9 @@ class Square:
 
     def get_status(self):
         return self.status
+
+    def insert_letter(self, letter):
+        self.letter = letter
+
+    def set_status(self, status):
+        self.status = status

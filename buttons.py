@@ -77,7 +77,6 @@ class LetterButton(Button):
     LETTER_BOX_COLOR_WRONG_POS = (195, 217, 26)
     LETTER_BOX_COLOR_RIGHT_POS = (22, 107, 22)
 
-
     def __init__(self, letter, x_pos, y_pos):
 
         super().__init__(letter, self.LETTER_BOX_HEIGHT, self.LETTER_BOX_WIDTH,

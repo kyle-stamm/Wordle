@@ -45,6 +45,7 @@ for line in file:
     wordle_bank.append(line.strip())
 file.close()
 
+
 def update(x_pos, y_pos):
 
     global scene, start, grid, end
@@ -107,12 +108,16 @@ def update(x_pos, y_pos):
                     user_input = ['', '', '', '', '']
 
                     if grid.check_row(alphabet):
+                        scene = 3
                         end[0] = True
                         end[1] = 'win'
+                        start = False
 
-                    if grid.change_row():
+                    elif grid.change_row():
+                        scene = 4
                         end[0] = True
                         end[1] = 'lose'
+                        start = False
 
                 if pygame.mouse.get_pressed()[0]:
                     x_pos = pygame.mouse.get_pos()[0]
@@ -122,7 +127,7 @@ def update(x_pos, y_pos):
                     x_pos = None
                     y_pos = None
 
-                if x_pos and y_pos:
+                if x_pos and y_pos and not end[0]:
                     for button in button_list:
                         if button.get_hitbox().collidepoint(x_pos, y_pos) and button.get_scene() == scene:
                             scene = button.set_clicked_true()
@@ -247,7 +252,7 @@ def main():
 
     while running:
 
-        if not start:
+        if not start and not end[0]:
 
             scene = 1
 
