@@ -1,4 +1,7 @@
 import random
+
+import pygame
+
 from text import *
 from buttons import *
 from grid import *
@@ -67,12 +70,12 @@ def update(x_pos, y_pos):
             user_types = True
             user_input = ['', '', '', '', '']
             flag = False
-            index_last_blank = 0
+            index_first_blank = 0
 
             while user_types:
 
                 if user_input[len(user_input) - 1] == '':
-                    index_last_blank = user_input.index('')
+                    index_first_blank = user_input.index('')
                 else:
                     flag = True
 
@@ -92,12 +95,13 @@ def update(x_pos, y_pos):
 
                         elif event.key == pygame.K_BACKSPACE:
                             if not flag:
-                                user_input[index_last_blank - 1] = ''
+                                user_input[index_first_blank - 1] = ''
                             else:
                                 user_input[4] = ''
                                 flag = False
+                            print(user_input)
                         elif not flag and event.unicode.isalpha():
-                            user_input[index_last_blank] = event.unicode.upper()
+                            user_input[index_first_blank] = event.unicode.upper()
                             print(user_input)
 
                 for square in grid.get_current_row():
@@ -263,10 +267,14 @@ def main():
         elif end[0] and end[1] == 'win':
 
             scene = 3
+            x_pos = None
+            y_pos = None
 
         elif end[0] and end[1] == 'lose':
 
             scene = 4
+            x_pos = None
+            y_pos = None
 
         for event in pygame.event.get():
 
