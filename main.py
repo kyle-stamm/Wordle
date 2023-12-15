@@ -1,5 +1,5 @@
 import random
-
+import time
 import pygame
 
 from text import *
@@ -65,6 +65,8 @@ for line in file:
     wordle_bank.append(line.strip())
 file.close()
 
+ERROR_FONT = pygame.font.SysFont('cambria', 48)
+
 
 def update(x_pos, y_pos):
 
@@ -109,6 +111,12 @@ def update(x_pos, y_pos):
 
                             if word_str.lower() in word_bank:
                                 user_types = False
+                            else:
+                                invalid_word_text = ERROR_FONT.render("Not In Word List", True, (0, 0, 0))
+                                pygame.draw.rect(screen, (150, 0, 0), (175, 275, 400, 200))
+                                screen.blit(invalid_word_text, (175 + 200 - (invalid_word_text.get_width() / 2.0), 275 + 100 - (invalid_word_text.get_height() / 2.0)))
+                                pygame.display.flip()
+                                time.sleep(1)
 
                         elif event.key == pygame.K_BACKSPACE:
                             if not flag:
@@ -161,7 +169,7 @@ def update(x_pos, y_pos):
 
                         if letter.get_hitbox().collidepoint(x_pos, y_pos):
                             if not flag and not letter.is_clicked():
-                                user_input[index_last_blank] = letter.get_letter()
+                                user_input[index_first_blank] = letter.get_letter()
                                 print(user_input)
                                 letter.set_clicked_true()
 
