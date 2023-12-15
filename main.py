@@ -20,21 +20,38 @@ text_list = [Text('Welcome to Wordle!', 48, (0, 0, 0), 1, y_pos=200),
              Text('WORDLE', 36, (240, 240, 240), 2, y_pos=20),
              Text('You Won!', 60, (0, 0, 0), 3, y_pos=300),
              Text('You Lost!', 60, (0, 0, 0), 4, y_pos=300)]
-
 button_list = [Button('Start', 100, 200, (150, 50, 0), 1, y_pos=400),
                Button('Exit', 50, 50, (150, 50, 0), 2, x_pos=690, y_pos=10),
                Button('Exit', 100, 150, (12, 176, 194), 3, x_pos=400, y_pos=475),
                Button('Play Again', 100, 150, (12, 176, 194), 3, x_pos=200, y_pos=475),
                Button('Exit', 100, 150, (12, 176, 194), 4, x_pos=400, y_pos=475),
                Button('Play Again', 100, 150, (12, 176, 194), 4, x_pos=200, y_pos=475)]
-
-alphabet = []
-for x in range(10):
-    alphabet.append(LetterButton(chr(x + 65), 125 + (x * 50), 550))
-for y in range(10, 19):
-    alphabet.append(LetterButton(chr(y + 65), 150 + ((y - 10) * 50), 600))
-for z in range(19, 26):
-    alphabet.append(LetterButton(chr(z + 65), 200 + ((z - 19) * 50), 650))
+alphabet = [LetterButton('Q', 125, 550),
+            LetterButton('W', 175, 550),
+            LetterButton('E', 225, 550),
+            LetterButton('R', 275, 550),
+            LetterButton('T', 325, 550),
+            LetterButton('Y', 375, 550),
+            LetterButton('U', 425, 550),
+            LetterButton('I', 475, 550),
+            LetterButton('O', 525, 550),
+            LetterButton('P', 575, 550),
+            LetterButton('A', 150, 600),
+            LetterButton('S', 200, 600),
+            LetterButton('D', 250, 600),
+            LetterButton('F', 300, 600),
+            LetterButton('G', 350, 600),
+            LetterButton('H', 400, 600),
+            LetterButton('J', 450, 600),
+            LetterButton('K', 500, 600),
+            LetterButton('L', 550, 600),
+            LetterButton('Z', 200, 650),
+            LetterButton('X', 250, 650),
+            LetterButton('C', 300, 650),
+            LetterButton('V', 350, 650),
+            LetterButton('B', 400, 650),
+            LetterButton('N', 450, 650),
+            LetterButton('M', 500, 650)]
 
 word_bank = []
 file = open('5 letter words.txt')
@@ -169,19 +186,19 @@ def update(x_pos, y_pos):
 
         elif scene == 4:
 
-            if x_pos and y_pos:
-                for button in button_list:
-                    if button.get_hitbox().collidepoint(x_pos, y_pos) and button.get_scene() == scene:
-                        scene = button.set_clicked_true()
-                        start = False
-                        end[0] = False
-                        end[1] = None
+                if x_pos and y_pos:
+                    for button in button_list:
+                        if button.get_hitbox().collidepoint(x_pos, y_pos) and button.get_scene() == scene:
+                            scene = button.set_clicked_true()
+                            start = False
+                            end[0] = False
+                            end[1] = None
 
-                        for letter in alphabet:
-                            letter.set_status(-1)
+                            for letter in alphabet:
+                                letter.set_status(-1)
 
-                        for button in button_list:
-                            button.set_clicked_false()
+                            for button in button_list:
+                                button.set_clicked_false()
 
 
 def render():
